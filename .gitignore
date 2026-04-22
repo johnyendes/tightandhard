@@ -40,9 +40,6 @@ Thumbs.db
 .idea/
 *.iml
 
-# Docs / drafts that aren't in the code tree
-persona-image-prompts.md
-
 # Test artifacts
 coverage/
 .nyc_output/
