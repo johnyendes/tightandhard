@@ -1,0 +1,224 @@
+// TightandHard Character Generator — Prisma schema.
+// Separate database from the companion app (different product, different lifecycle).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// =====================================================================
+// CAMPAIGN — groups characters for a client/brand campaign
+// =====================================================================
+
+model Campaign {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String                              // Clerk user ID
+  name            String
+  brandName       String?
+  targetAudience  Json?                               // demographics, age range, interests
+  visualGuidelines String?
+  status          String         @default("draft")   // draft | active | archived
+
+  characters      Character[]
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([userId])
+}
+
+// =====================================================================
+// CHARACTER — a consistent AI model persona
+// =====================================================================
+
+model Character {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String
+
+  name            String
+  displayName     String?                             // public-facing stage name
+  archetype       String?                             // e.g. "Girl Next Door", "Sultry Mature"
+
+  // Character bio
+  bio             Json                                // { age, ethnicity, personality, occupation, backstory }
+
+  // Visual direction
+  visualStyle     Json                                // { aesthetic, lighting, mood, colorPalette }
+  photographySettings Json?                           // { camera, lens, aperture, iso }
+
+  // Consistency — the key to the whole product
+  baseSeed        Int                                 // locked seed for reproducibility
+  masterFaceUrl   String?                             // Cloudinary URL of master face reference
+  loraModelUrl    String?                             // URL to trained LoRA checkpoint on Replicate
+  useFaceSwap     Boolean        @default(true)
+  useControlNet   Boolean        @default(true)
+
+  // Prompt engineering
+  basePrompt      String                              // positive prompt core (persona description)
+  negativePrompt  String                              // negative prompt (quality gates)
+
+  // Stats
+  totalImages     Int            @default(0)
+  successfulGens  Int            @default(0)
+  failedGens      Int            @default(0)
+
+  // Status
+  status          String         @default("draft")   // draft | ready | active | archived
+  isPublic        Boolean        @default(false)     // if true, licensable to other users
+
+  images          GeneratedImage[]
+  campaign        Campaign?      @relation(fields: [campaignId], references: [id])
+  campaignId      String?        @db.ObjectId
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([userId])
+  @@index([campaignId])
+  @@index([status])
+}
+
+// =====================================================================
+// LORA TRAINING — track training runs for face consistency
+// =====================================================================
+
+model LoraTraining {
+  id                String      @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String
+  characterId       String      @db.ObjectId
+
+  triggerWord       String                                  // unique word baked into LoRA (e.g. "AVA__CHARACTER")
+  inputImageUrls    String[]                                // 15-30 Cloudinary URLs of training photos
+  trainerModel      String      @default("ostris/flux-dev-lora-trainer")
+  steps             Int         @default(1000)
+  learningRate      Float       @default(0.0004)
+
+  replicateTrainingId String?   @unique
+  status            String      @default("pending")         // pending | training | succeeded | failed | cancelled
+  progress          Float       @default(0)                 // 0..1
+  outputLoraUrl     String?                                 // final .safetensors URL
+
+  logUrl            String?
+  errorMessage      String?
+
+  startedAt         DateTime?
+  completedAt       DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  @@index([characterId])
+  @@index([userId])
+  @@index([status])
+}
+
+// =====================================================================
+// GENERATED IMAGE — one image generation output
+// =====================================================================
+
+model GeneratedImage {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  characterId     String         @db.ObjectId
+  userId          String
+
+  prompt          String
+  negativePrompt  String?
+  seed            Int
+  steps           Int            @default(30)
+  guidanceScale   Float          @default(7.5)
+  width           Int            @default(1024)
+  height          Int            @default(1024)
+
+  replicateJobId  String?                             // Replicate prediction ID
+  modelUsed       String                              // e.g. "stability-ai/sdxl:...", "black-forest-labs/flux-schnell:..."
+  loraUsed        String?                             // LoRA ID if applied
+  faceSwapped     Boolean        @default(false)
+  upscaled        Boolean        @default(false)
+
+  imageUrl        String?                             // Final Cloudinary URL
+  thumbnailUrl    String?
+
+  generationTimeMs Int?
+  status          String         @default("pending") // pending | generating | complete | failed
+  errorMessage    String?
+
+  // Quality scores (filled in by review step)
+  photorealismScore Float?
+  consistencyScore  Float?
+  compositionScore  Float?
+
+  // Licensing
+  licensedFor     String[]       @default([])       // list of client/campaign IDs this image is released to
+  watermarked     Boolean        @default(true)      // preview watermark until license purchased
+
+  createdAt       DateTime       @default(now())
+
+  character       Character      @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  @@index([characterId])
+  @@index([userId])
+  @@index([status])
+}
+
+// =====================================================================
+// LICENSE — records commercial use rights for generated images
+// =====================================================================
+
+model License {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String                              // license owner
+  characterId     String         @db.ObjectId
+  tier            String                              // personal | commercial | exclusive
+
+  // Usage limits
+  monthlyImageQuota Int          @default(0)         // 0 = unlimited
+  imagesUsedThisMonth Int        @default(0)
+
+  // Commercial rights
+  allowCommercialUse Boolean     @default(false)
+  allowRedistribution Boolean    @default(false)
+  allowModification   Boolean    @default(true)
+
+  // Stripe
+  stripeSubscriptionId String?   @unique
+  stripePriceId        String?
+  currentPeriodEnd     DateTime?
+
+  // State
+  status          String         @default("active") // active | cancelled | expired
+  startedAt       DateTime       @default(now())
+  expiresAt       DateTime?
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([userId])
+  @@index([characterId])
+}
+
+// =====================================================================
+// USER SUBSCRIPTION — overall plan (vs. per-character license above)
+// =====================================================================
+
+model UserSubscription {
+  id                        String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId                    String     @unique
+  plan                      String     @default("free") // free | starter | pro | studio | enterprise
+
+  stripeCustomerId          String?    @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId      String?    @unique @map(name: "stripe_subscription_id")
+  stripePriceId             String?    @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd    DateTime?  @map(name: "stripe_current_period_end")
+
+  // Quotas by plan
+  monthlyImageQuota         Int        @default(10)
+  imagesUsedThisMonth       Int        @default(0)
+  maxCharacters             Int        @default(1)
+
+  createdAt                 DateTime   @default(now())
+  updatedAt                 DateTime   @updatedAt
+}

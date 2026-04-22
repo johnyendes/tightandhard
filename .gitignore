@@ -1,0 +1,48 @@
+# Secrets — NEVER commit these
+.env
+.env.local
+.env.*.local
+.env.production
+keys.txt
+*.pem
+*.key
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+.next/
+dist/
+build/
+out/
+*.log
+
+# Prisma (generated client)
+**/node_modules/.prisma
+**/generated/
+
+# Legacy research data (not source code)
+legacy/
+*.zip.extract/
+
+# Local image library (images live in Cloudinary, not git)
+girls-library/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+*.swp
+
+# Editor
+.vscode/*
+!.vscode/settings.json
+.idea/
+*.iml
+
+# Docs / drafts that aren't in the code tree
+persona-image-prompts.md
+
+# Test artifacts
+coverage/
+.nyc_output/

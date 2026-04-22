@@ -1,0 +1,253 @@
+// TightandHard Prisma schema.
+// Base inherited from rsshonjoydas/ai-companion MIT template.
+// Extended 2026-04-20 with Bond, Memory, Outfit, Scene models — ported from legacy build.
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// =====================================================================
+// CORE (unchanged from base)
+// =====================================================================
+
+model Category {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  companions    Companion[]
+}
+
+model Companion {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String
+  userName      String
+  src           String
+  name          String
+  description   String
+  instructions  String
+  seed          String
+
+  // Persona config (new — ported from legacy personas.json)
+  voiceStyle    String?     // VoiceStyle enum as string (warm_melodic, sultry, etc.)
+  personality   Json?       // { empathy: 95, warmth: 90, ... }
+  defaultOutfits String[]   // ["romantic", "casual", "elegant"]
+
+  category      Category     @relation(fields: [categoryId], references: [id])
+  categoryId    String       @db.ObjectId
+
+  messages      Message[]
+  memories      Memory[]
+  bonds         Bond[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([categoryId])
+  @@fulltext([name])
+}
+
+enum Role {
+  user
+  system
+}
+
+model Message {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  role          Role
+  content       String
+
+  // New: emotional context at the moment of the message (for voice modulation)
+  emotion       String?
+
+  companionId   String      @db.ObjectId
+  userId        String
+
+  companion     Companion   @relation(fields: [companionId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([companionId])
+}
+
+model UserSubscription {
+  id                        String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId                    String     @unique
+  stripeCustomerId          String?    @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId      String?    @unique @map(name: "stripe_subscription_id")
+  stripePriceId             String?    @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd    DateTime?  @map(name: "stripe_current_period_end")
+}
+
+// =====================================================================
+// BONDING SYSTEM (ported from legacy BondingTier.js)
+// 10-tier progression: Acquaintance → Beyond Words
+// One Bond row per (userId, companionId) pair — tracks relationship state.
+// =====================================================================
+
+model Bond {
+  id                  String      @id @default(auto()) @map("_id") @db.ObjectId
+  userId              String
+  companionId         String      @db.ObjectId
+
+  tier                Int         @default(1)       // 1..10
+  xp                  Int         @default(0)
+  trustScore          Float       @default(0)       // 0..1
+  totalInteractions   Int         @default(0)
+
+  // Unlock tracking — which outfits/scenes/features have been unlocked
+  unlockedOutfitIds   String[]    @default([])
+  unlockedSceneIds    String[]    @default([])
+
+  lastInteractionAt   DateTime    @default(now())
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  companion           Companion   @relation(fields: [companionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, companionId])
+  @@index([companionId])
+}
+
+// =====================================================================
+// MEMORY SYSTEM (ported from legacy Memory.js)
+// Structured memories — separate from raw Message chat log.
+// Flagged by importance (1-10); memories ≥8 are "core" and always loaded
+// into the LLM context regardless of recency.
+// =====================================================================
+
+enum MemoryType {
+  conversation
+  preference
+  event
+  fact
+  milestone
+  shared_secret
+  recurring_topic
+  emotional
+  goal
+  relationship
+}
+
+model Memory {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String
+  companionId   String       @db.ObjectId
+
+  content       String
+  type          MemoryType   @default(conversation)
+  importance    Int          @default(5)         // 1..10
+  isCore        Boolean      @default(false)     // true when importance >= 8
+  tags          String[]     @default([])
+
+  accessCount   Int          @default(0)
+  lastAccessedAt DateTime    @default(now())
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  companion     Companion    @relation(fields: [companionId], references: [id], onDelete: Cascade)
+
+  @@index([companionId, isCore])
+  @@index([companionId, importance])
+}
+
+// =====================================================================
+// OUTFIT SYSTEM (ported from legacy Outfit.js + outfit_dresser.js)
+// Wardrobe items — unlocked via bond tier or spent tokens.
+// =====================================================================
+
+model Outfit {
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  category        String      // casual, formal, fantasy, seasonal, athletic, intimate
+  description     String
+  colors          String[]    @default([])
+  moodEffects     Json?       // { happy: 0.3, shy: -0.2 } — emotional influence
+  imageUrl        String?
+
+  unlockTokens    Int         @default(0)         // 0 = free
+  unlockBondTier  Int         @default(1)         // minimum bond tier to unlock
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([category])
+}
+
+// =====================================================================
+// MIRROR LEARNING (ported from legacy MirrorLearning.js)
+// Records (userTrigger → adaptedResponse) patterns per companion per user.
+// Reinforced/weakened over time by explicit feedback.
+// =====================================================================
+
+enum MirrorCategory {
+  conversation
+  emotional
+  behavioral
+  preference
+  conflict
+  intimacy
+  humor
+  support
+  advice
+  general
+}
+
+model MirrorPattern {
+  id                String            @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String
+  companionId       String            @db.ObjectId
+
+  userTrigger       String            // what the user said / signalled
+  adaptedResponse   String            // the response that worked
+  behaviorPattern   String            // a summary of the pattern
+
+  confidence        Float             @default(0.5)     // 0..1
+  successRate       Float             @default(0.5)     // 0..1
+  usageCount        Int               @default(0)
+  successCount      Int               @default(0)
+  failureCount      Int               @default(0)
+
+  category          MirrorCategory    @default(general)
+  emotionalContext  Json?             // { mood, happiness, trust, affection }
+  tags              String[]          @default([])
+
+  isActive          Boolean           @default(true)
+  lastUsage         DateTime?
+  lastReinforcement DateTime?
+
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  @@index([companionId, userId, isActive])
+  @@index([companionId, confidence])
+}
+
+// =====================================================================
+// SCENE SYSTEM (ported from legacy Scene.js + intimate_scene_engine.js)
+// Backgrounds/environments the companion can be "in" during chat.
+// =====================================================================
+
+model Scene {
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  description     String
+  timeOfDay       String      @default("any")     // morning | afternoon | evening | night | any
+  weather         String?
+  soundscape      String?
+  ambientLighting String?
+  imageUrl        String?
+
+  unlockBondTier  Int         @default(1)
+  isIntimate      Boolean     @default(false)     // gated behind adult tier
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
