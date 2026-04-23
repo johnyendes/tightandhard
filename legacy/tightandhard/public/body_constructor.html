@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TightandHard - Body Constructor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 0;
+            min-height: 600px;
+        }
+
+        .controls-panel {
+            padding: 30px;
+            background: #fafafa;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        .preview-panel {
+            background: linear-gradient(45deg, #f0f9ff, #e0f2fe);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-left: 2px solid #e5e7eb;
+        }
+
+        .control-group {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .control-group h3 {
+            color: #374151;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+
+        .control-item {
+            margin-bottom: 20px;
+        }
+
+        .control-item label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4b5563;
+        }
+
+        .slider-container {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #e5e7eb;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4f46e5, #7c3aed);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4f46e5, #7c3aed);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-value {
+            position: absolute;
+            right: 0;
+            top: -25px;
+            background: #374151;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .preview-stub {
+            width: 200px;
+            height: 300px;
+            background: linear-gradient(180deg, #ffeaa7, #fab1a0);
+            border-radius: 100px 100px 20px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .preview-stub::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            width: 60px;
+            height: 60px;
+            background: #e17055;
+            border-radius: 50%;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-text {
+            margin-top: 20px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .export-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 12px;
+        }
+
+        .export-btn {
+            width: 100%;
+            padding: 15px;
+            background: white;
+            color: #4f46e5;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .json-preview {
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .json-code {
+            color: white;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .preview-panel {
+                border-left: none;
+                border-top: 2px solid #e5e7eb;
+            }
+        }
+    </style>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧬 Body Constructor</h1>
+            <p>Design and configure anatomical parameters with precision</p>
+        </div>
+
+        <div class="main-content">
+            <div class="controls-panel">
+                <!-- Basic Parameters -->
+                <div class="control-group">
+                    <h3>🎯 Basic Parameters</h3>
+                    
+                    <div class="control-item">
+                        <label for="gender">Gender</label>
+                        <select id="gender" onchange="updateConfig()">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="non-binary">Non-binary</option>
+                        </select>
+                    </div>
+
+                    <div class="control-item">
+                        <label for="age">Age</label>
+                        <div class="slider-container">
+                            <input type="range" id="age" class="slider" min="18" max="80" value="25" oninput="updateSliderValue(this); updateConfig()">
+                            <span class="slider-value">25</span>
+                        </div>
+                    </div>
+
+                    <div class="control-item">
+                        <label for="ethnicity">Ethnicity</label>
+                        <select id="ethnicity" onchange="updateConfig()">
+                            <option value="caucasian">Caucasian</option>
+                            <option value="african">African</option>
+                            <option value="asian">Asian</option>
+                            <option value="hispanic">Hispanic</option>
+                            <option value="mixed">Mixed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Physical Dimensions -->
+                <div class="control-group">
+                    <h3>📏 Physical Dimensions</h3>
+                    
+                    <div class="control-item">
+                        <label for="height">Height (cm)</label>
+                        <div class="slider-container">
+                            <input type="range" id="height" class="slider" min="140" max="220" value="170" oninput="updateSliderValue(this); updateConfig()">
+                            <span class="slider-value">170</span>
+                        </div>
+                    </div>
+
+                    <div class="control-item">
+                        <label for="weight">Weight (kg)</label>
+                        <div class="slider-container">
+                            <input type="range" id="weight" class="slider" min="40" max="150" value="70" oninput="updateSliderValue(this); updateConfig()">
+                            <span class="slider-value">70</span>
+                        </div>
+                    </div>
+
+                    <div class="control-item">
+                        <label for="build">Build Type</label>
+                        <select id="build" onchange="updateConfig()">
+                            <option value="ectomorph">Ectomorph (Slim)</option>
+                            <option value="mesomorph">Mesomorph (Athletic)</option>
+                            <option value="endomorph">Endomorph (Stocky)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Body Proportions -->
+                <div class="control-group">
+                    <h3>⚖️ Body Proportions</h3>
+                    
+                    <div class="control-item">
+                        <label for="shoulderWidth">Shoulder Width</label>
+                        <div class="slider-container">
+                            <input type="range" id="shoulderWidth" class="slider" min="0.8" max="1.4" step="0.05" value="1.0" oninput="updateSliderValue(this); updateConfig()">
+                            <span class="slider-value">1.0</span>
+                        </div>
+                    </div>
+
+                    <div class="control-item">
+                        <label for="waistRatio">Waist-to-Hip Ratio</label>
+                        <div class="slider-container">
+                            <input type="range" id="waistRatio" class="slider" min="0.6" max="1.1" step="0.05" value="0.8" oninput="updateSliderValue(this); updateConfig()">
+                            <span class="slider-value">0.8</span>
+                        </div>
+                    </div>
+
+                    <div class="control-item">
+                        <label for="legLength">Leg Length Ratio</label>
+                        <div class="slider-container">
+                            <input type="range" id="legLength" class="slider" min="0.4" max="0.6" step="0.02" value="0.5" oninput="updateSliderValue(this); updateConfig()">
+                            <span class="slider-value">0.5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Muscle Definition -->
+                <div class="control-group">
+                    <h3>💪 Muscle Definition</h3>
+                    
+                    <div class="control-item">
+                        <label for="muscleMass">Overall Muscle Mass</label>
+                        <div class="slider-container">
+                            <input type="range" id="muscleMass" class="slider" min="0.5" max="2.0" step="0.1" value="1.0" oninput="updateSliderValue(this); updateConfig()">
+                            <span class="slider-value">1.0</span>
+                        </div>
+                    </div>
+
+                    <div class="control-item">
+                        <label for="bodyFat">Body Fat Percentage</label>
+                        <div class="slider-container">
+                            <input type="range" id="bodyFat" class="slider" min="5" max="35" value="15" oninput="updateSliderValue(this); updateConfig()">
+                            <span class="slider-value">15</span>
+                        </div>
+                    </div>
+
+                    <div class="control-item">
+                        <label for="muscleDefinition">Muscle Definition</label>
+                        <select id="muscleDefinition" onchange="updateConfig()">
+                            <option value="soft">Soft</option>
+                            <option value="toned">Toned</option>
+                            <option value="defined">Defined</option>
+                            <option value="ripped">Ripped</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Export Section -->
+                <div class="export-section">
+                    <button class="export-btn" onclick="exportConfig()">📁 Export Configuration</button>
+                    <div class="json-preview">
+                        <div class="json-code" id="jsonPreview">// Configuration will appear here</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-panel">
+                <div class="preview-stub" id="previewStub">
+                    <!-- Head placeholder -->
+                </div>
+                <div class="preview-text">
+                    <h3>Live Preview</h3>
+                    <p>Visual representation will update as you modify parameters</p>
+                    <div id="statsDisplay" style="margin-top: 15px; font-size: 0.9rem; color: #6b7280;">
+                        <div>BMI: <span id="bmiValue">24.2</span></div>
+                        <div>Body Type: <span id="bodyTypeValue">Normal</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration object
+        let bodyConfig = {
+            basic: {
+                gender: 'male',
+                age: 25,
+                ethnicity: 'caucasian'
+            },
+            dimensions: {
+                height: 170,
+                weight: 70,
+                build: 'mesomorph'
+            },
+            proportions: {
+                shoulderWidth: 1.0,
+                waistRatio: 0.8,
+                legLength: 0.5
+            },
+            muscle: {
+                muscleMass: 1.0,
+                bodyFat: 15,
+                muscleDefinition: 'toned'
+            },
+            metadata: {
+                created: new Date().toISOString(),
+                version: '1.0'
+            }
+        };
+
+        // Update slider value display
+        function updateSliderValue(slider) {
+            const valueSpan = slider.nextElementSibling;
+            valueSpan.textContent = slider.value;
+        }
+
+        // Update configuration
+        function updateConfig() {
+            // Basic parameters
+            bodyConfig.basic.gender = document.getElementById('gender').value;
+            bodyConfig.basic.age = parseInt(document.getElementById('age').value);
+            bodyConfig.basic.ethnicity = document.getElementById('ethnicity').value;
+
+            // Physical dimensions
+            bodyConfig.dimensions.height = parseInt(document.getElementById('height').value);
+            bodyConfig.dimensions.weight = parseInt(document.getElementById('weight').value);
+            bodyConfig.dimensions.build = document.getElementById('build').value;
+
+            // Body proportions
+            bodyConfig.proportions.shoulderWidth = parseFloat(document.getElementById('shoulderWidth').value);
+            bodyConfig.proportions.waistRatio = parseFloat(document.getElementById('waistRatio').value);
+            bodyConfig.proportions.legLength = parseFloat(document.getElementById('legLength').value);
+
+            // Muscle definition
+            bodyConfig.muscle.muscleMass = parseFloat(document.getElementById('muscleMass').value);
+            bodyConfig.muscle.bodyFat = parseInt(document.getElementById('bodyFat').value);
+            bodyConfig.muscle.muscleDefinition = document.getElementById('muscleDefinition').value;
+
+            // Update timestamp
+            bodyConfig.metadata.lastModified = new Date().toISOString();
+
+            // Update preview
+            updatePreview();
+            updateJsonPreview();
+        }
+
+        // Update visual preview
+        function updatePreview() {
+            const previewStub = document.getElementById('previewStub');
+            const height = bodyConfig.dimensions.height;
+            const weight = bodyConfig.dimensions.weight;
+            const shoulderWidth = bodyConfig.proportions.shoulderWidth;
+            const muscleMass = bodyConfig.muscle.muscleMass;
+
+            // Adjust preview size based on proportions
+            const baseWidth = 200;
+            const newWidth = baseWidth * shoulderWidth * muscleMass;
+            previewStub.style.width = newWidth + 'px';
+
+            // Update color based on build and muscle definition
+            let gradient;
+            switch(bodyConfig.dimensions.build) {
+                case 'ectomorph':
+                    gradient = 'linear-gradient(180deg, #ffeaa7, #fab1a0)';
+                    break;
+                case 'mesomorph':
+                    gradient = 'linear-gradient(180deg, #fda085, #f093fb)';
+                    break;
+                case 'endomorph':
+                    gradient = 'linear-gradient(180deg, #fbc2eb, #a6c1ee)';
+                    break;
+            }
+            previewStub.style.background = gradient;
+
+            // Calculate BMI
+            const heightM = height / 100;
+            const bmi = (weight / (heightM * heightM)).toFixed(1);
+            document.getElementById('bmiValue').textContent = bmi;
+
+            // Determine body type
+            let bodyType = 'Normal';
+            if (bmi < 18.5) bodyType = 'Underweight';
+            else if (bmi > 25) bodyType = 'Overweight';
+            else if (bmi > 30) bodyType = 'Obese';
+            document.getElementById('bodyTypeValue').textContent = bodyType;
+        }
+
+        // Update JSON preview
+        function updateJsonPreview() {
+            const jsonPreview = document.getElementById('jsonPreview');
+            jsonPreview.textContent = JSON.stringify(bodyConfig, null, 2);
+        }
+
+        // Export configuration
+        function exportConfig() {
+            const dataStr = JSON.stringify(bodyConfig, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'anatomy_config.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Also log to console for easy access
+            console.log('Exported Configuration:', bodyConfig);
+            
+            // Show success message
+            const originalText = document.querySelector('.export-btn').textContent;
+            document.querySelector('.export-btn').textContent = '✅ Configuration Exported!';
+            setTimeout(() => {
+                document.querySelector('.export-btn').textContent = originalText;
+            }, 2000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateConfig();
+        });
+    </script>
+</body>
+</html>

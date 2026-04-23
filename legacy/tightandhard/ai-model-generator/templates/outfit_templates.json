@@ -1,0 +1,429 @@
+{
+  "outfitCategories": {
+    "romantic": {
+      "name": "Romantic",
+      "description": "Romantic and intimate outfits",
+      "templates": [
+        {
+          "name": "Silk Lingerie Set",
+          "items": ["silk bra", "matching panties", "garter belt", "stockings"],
+          "colors": ["black", "red", "white", "pink", "purple"],
+          "materials": ["silk", "satin", "lace"],
+          "moodEffects": { "romance": 0.9, "intimacy": 0.85, "sensuality": 0.8 }
+        },
+        {
+          "name": "Elegant Nightgown",
+          "items": ["silk nightgown", "robe", "slippers"],
+          "colors": ["white", "cream", "pink", "lavender", "midnight blue"],
+          "materials": ["silk", "satin", "chiffon"],
+          "moodEffects": { "romance": 0.85, "comfort": 0.9, "elegance": 0.85 }
+        },
+        {
+          "name": "Date Night Dress",
+          "items": ["cocktail dress", "heels", "jewelry", "clutch"],
+          "colors": ["black", "red", "navy", "emerald", "burgundy"],
+          "materials": ["silk", "satin", "velvet", "lace"],
+          "moodEffects": { "romance": 0.9, "elegance": 0.85, "confidence": 0.8 }
+        },
+        {
+          "name": "Intimate Sleep Set",
+          "items": ["camisole", "shorts", "robe"],
+          "colors": ["black", "white", "pink", "purple", "blue"],
+          "materials": ["silk", "satin", "cotton"],
+          "moodEffects": { "comfort": 0.95, "intimacy": 0.8, "relaxation": 0.85 }
+        },
+        {
+          "name": "Lace Bodysuit",
+          "items": ["lace bodysuit", "thong", "thigh-highs"],
+          "colors": ["black", "red", "white", "pink"],
+          "materials": ["lace", "mesh"],
+          "moodEffects": { "sensuality": 0.95, "confidence": 0.85, "intimacy": 0.9 }
+        }
+      ]
+    },
+    "seductive": {
+      "name": "Seductive",
+      "description": "Alluring and provocative outfits",
+      "templates": [
+        {
+          "name": "Strappy Lingerie",
+          "items": ["strappy bra", "thong", "garters", "stockings"],
+          "colors": ["black", "red", "white", "purple"],
+          "materials": ["lace", "mesh", "leather"],
+          "moodEffects": { "sensuality": 0.95, "confidence": 0.9, "mystery": 0.8 }
+        },
+        {
+          "name": "Corset Ensemble",
+          "items": ["corset", "thong", "stockings", "heels"],
+          "colors": ["black", "red", "burgundy", "purple"],
+          "materials": ["brocade", "satin", "lace", "velvet"],
+          "moodEffects": { "sensuality": 0.9, "confidence": 0.95, "power": 0.85 }
+        },
+        {
+          "name": "Sheer Teddy",
+          "items": ["sheer teddy", "thong", "stockings"],
+          "colors": ["black", "white", "red", "pink"],
+          "materials": ["sheer", "mesh", "lace"],
+          "moodEffects": { "sensuality": 0.95, "mystery": 0.85, "intimacy": 0.9 }
+        },
+        {
+          "name": "Open Cup Set",
+          "items": ["open cup bra", "matching panties", "thigh-highs"],
+          "colors": ["black", "red", "white", "purple"],
+          "materials": ["lace", "mesh", "leather"],
+          "moodEffects": { "sensuality": 1.0, "boldness": 0.95, "excitement": 0.9 }
+        },
+        {
+          "name": "Crotchless Lingerie",
+          "items": ["crotchless bodysuit", "stockings", "heels"],
+          "colors": ["black", "red", "white", "pink"],
+          "materials": ["lace", "mesh", "leather"],
+          "moodEffects": { "sensuality": 1.0, "boldness": 0.95, "intimacy": 0.95 }
+        }
+      ]
+    },
+    "casual": {
+      "name": "Casual",
+      "description": "Comfortable everyday outfits",
+      "templates": [
+        {
+          "name": "Basic T-Shirt & Jeans",
+          "items": ["t-shirt", "jeans", "sneakers"],
+          "colors": ["white", "black", "blue", "gray", "pink"],
+          "materials": ["cotton", "denim"],
+          "moodEffects": { "comfort": 0.95, "relaxation": 0.9, "casual": 1.0 }
+        },
+        {
+          "name": "Cozy Sweater & Leggings",
+          "items": ["sweater", "leggings", "socks"],
+          "colors": ["cream", "gray", "pink", "blue", "purple"],
+          "materials": ["cotton", "wool", "cashmere"],
+          "moodEffects": { "comfort": 1.0, "warmth": 0.9, "relaxation": 0.85 }
+        },
+        {
+          "name": "Tank Top & Shorts",
+          "items": ["tank top", "shorts", "sandals"],
+          "colors": ["white", "black", "blue", "pink", "yellow"],
+          "materials": ["cotton", "linen"],
+          "moodEffects": { "comfort": 0.9, "casual": 0.95, "energy": 0.8 }
+        },
+        {
+          "name": "Oversized Hoodie",
+          "items": ["hoodie", "leggings", "socks"],
+          "colors": ["gray", "black", "white", "blue", "pink"],
+          "materials": ["cotton", "fleece"],
+          "moodEffects": { "comfort": 1.0, "warmth": 0.95, "cozy": 0.95 }
+        },
+        {
+          "name": "Casual Dress",
+          "items": ["sundress", "sandals", "sunhat"],
+          "colors": ["white", "blue", "pink", "yellow", "floral patterns"],
+          "materials": ["cotton", "linen", "chiffon"],
+          "moodEffects": { "comfort": 0.9, "femininity": 0.9, "casual": 0.9 }
+        }
+      ]
+    },
+    "cozy": {
+      "name": "Cozy",
+      "description": "Ultra-comfortable loungewear",
+      "templates": [
+        {
+          "name": "Pajama Set",
+          "items": ["pajama top", "pajama bottoms", "slippers", "robe"],
+          "colors": ["cream", "pink", "blue", "gray", "lavender"],
+          "materials": ["cotton", "flannel", "silk"],
+          "moodEffects": { "comfort": 1.0, "warmth": 0.95, "relaxation": 0.95 }
+        },
+        {
+          "name": "Loungewear Set",
+          "items": ["sweatshirt", "sweatpants", "socks"],
+          "colors": ["gray", "black", "white", "blue", "pink"],
+          "materials": ["cotton", "fleece"],
+          "moodEffects": { "comfort": 1.0, "relaxation": 0.95, "cozy": 0.95 }
+        },
+        {
+          "name": "Robe & Nightgown",
+          "items": ["silk robe", "nightgown", "slippers"],
+          "colors": ["white", "cream", "pink", "lavender", "blue"],
+          "materials": ["silk", "satin", "velvet"],
+          "moodEffects": { "comfort": 0.95, "elegance": 0.85, "relaxation": 0.9 }
+        },
+        {
+          "name": "Oversized Sleep Shirt",
+          "items": ["oversized shirt", "boxers", "socks"],
+          "colors": ["white", "blue", "pink", "gray"],
+          "materials": ["cotton", "flannel"],
+          "moodEffects": { "comfort": 1.0, "warmth": 0.9, "cozy": 0.95 }
+        },
+        {
+          "name": "Matching Lounge Set",
+          "items": ["lounge top", "lounge bottoms", "slippers", "robe"],
+          "colors": ["cream", "gray", "pink", "blue", "purple"],
+          "materials": ["cotton", "modal", "bamboo"],
+          "moodEffects": { "comfort": 0.95, "warmth": 0.85, "elegance": 0.8 }
+        }
+      ]
+    },
+    "elegant": {
+      "name": "Elegant",
+      "description": "Sophisticated and formal outfits",
+      "templates": [
+        {
+          "name": "Evening Gown",
+          "items": ["evening gown", "heels", "jewelry", "clutch"],
+          "colors": ["black", "red", "navy", "emerald", "burgundy", "gold"],
+          "materials": ["silk", "satin", "velvet", "chiffon"],
+          "moodEffects": { "elegance": 1.0, "confidence": 0.95, "sophistication": 0.95 }
+        },
+        {
+          "name": "Cocktail Dress",
+          "items": ["cocktail dress", "heels", "jewelry", "clutch"],
+          "colors": ["black", "red", "navy", "pink", "purple"],
+          "materials": ["silk", "satin", "lace"],
+          "moodEffects": { "elegance": 0.95, "confidence": 0.9, "sophistication": 0.9 }
+        },
+        {
+          "name": "Designer Suit",
+          "items": ["blazer", "pants", "blouse", "heels"],
+          "colors": ["black", "navy", "gray", "white", "cream"],
+          "materials": ["wool", "silk", "cotton"],
+          "moodEffects": { "elegance": 0.95, "confidence": 0.9, "professional": 0.85 }
+        },
+        {
+          "name": "Formal Gown",
+          "items": ["gown", "heels", "diamond jewelry", "evening bag"],
+          "colors": ["black", "white", "red", "gold", "silver"],
+          "materials": ["silk", "satin", "velvet", "lace"],
+          "moodEffects": { "elegance": 1.0, "luxury": 0.95, "confidence": 0.95 }
+        },
+        {
+          "name": "Elegant Jumpsuit",
+          "items": ["jumpsuit", "heels", "statement jewelry", "clutch"],
+          "colors": ["black", "navy", "burgundy", "emerald", "champagne"],
+          "materials": ["silk", "satin", "velvet"],
+          "moodEffects": { "elegance": 0.9, "confidence": 0.85, "modernity": 0.85 }
+        }
+      ]
+    },
+    "sporty": {
+      "name": "Sporty",
+      "description": "Athletic and active outfits",
+      "templates": [
+        {
+          "name": "Sports Bra & Leggings",
+          "items": ["sports bra", "leggings", "running shoes"],
+          "colors": ["black", "white", "blue", "pink", "purple", "neon"],
+          "materials": ["spandex", "nylon", "polyester"],
+          "moodEffects": { "energy": 0.95, "confidence": 0.85, "motivation": 0.9 }
+        },
+        {
+          "name": "Athletic Set",
+          "items": ["athletic top", "athletic shorts", "sneakers"],
+          "colors": ["black", "white", "blue", "gray", "team colors"],
+          "materials": ["polyester", "spandex", "cotton"],
+          "moodEffects": { "energy": 0.9, "confidence": 0.8, "motivation": 0.85 }
+        },
+        {
+          "name": "Yoga Outfit",
+          "items": ["yoga top", "yoga pants", "mat", "socks"],
+          "colors": ["purple", "blue", "pink", "green", "gray"],
+          "materials": ["cotton", "spandex", "bamboo"],
+          "moodEffects": { "peace": 0.9, "balance": 0.85, "energy": 0.8 }
+        },
+        {
+          "name": "Gym Outfit",
+          "items": ["tank top", "shorts", "sneakers", "gloves"],
+          "colors": ["black", "gray", "blue", "red", "white"],
+          "materials": ["polyester", "spandex", "cotton"],
+          "moodEffects": { "energy": 0.95, "determination": 0.9, "confidence": 0.85 }
+        },
+        {
+          "name": "Activewear Set",
+          "items": ["sports jacket", "sports pants", "running shoes"],
+          "colors": ["black", "navy", "gray", "white", "neon accents"],
+          "materials": ["polyester", "spandex", "nylon"],
+          "moodEffects": { "energy": 0.9, "confidence": 0.85, "motivation": 0.85 }
+        }
+      ]
+    },
+    "party": {
+      "name": "Party",
+      "description": "Fun and glamorous outfits for going out",
+      "templates": [
+        {
+          "name": "Club Dress",
+          "items": ["club dress", "high heels", "statement jewelry", "clutch"],
+          "colors": ["black", "red", "silver", "gold", "neon"],
+          "materials": ["sequins", "leather", "lace", "mesh"],
+          "moodEffects": { "excitement": 0.95, "confidence": 0.9, "fun": 0.9 }
+        },
+        {
+          "name": "Glitter Outfit",
+          "items": ["glitter top", "skirt", "heels", "sparkly jewelry"],
+          "colors": ["gold", "silver", "rose gold", "champagne"],
+          "materials": ["sequins", "glitter", "metallic fabric"],
+          "moodEffects": { "excitement": 0.95, "glamour": 0.95, "confidence": 0.9 }
+        },
+        {
+          "name": "Party Jumpsuit",
+          "items": ["fancy jumpsuit", "heels", "bold jewelry", "clutch"],
+          "colors": ["black", "red", "burgundy", "emerald", "navy"],
+          "materials": ["satin", "velvet", "sequins"],
+          "moodEffects": { "excitement": 0.9, "confidence": 0.85, "glamour": 0.9 }
+        },
+        {
+          "name": "Night Out Set",
+          "items": ["sexy top", "skirt", "heels", "statement earrings"],
+          "colors": ["black", "red", "white", "silver", "gold"],
+          "materials": ["silk", "lace", "leather", "sequins"],
+          "moodEffects": { "excitement": 0.9, "glamour": 0.85, "confidence": 0.85 }
+        },
+        {
+          "name": "Festival Outfit",
+          "items": ["crop top", "high-waisted shorts", "boots", "accessories"],
+          "colors": ["neon", "pastel", "black", "white", "rainbow"],
+          "materials": ["cotton", "denim", "sequins"],
+          "moodEffects": { "excitement": 0.95, "fun": 0.95, "energy": 0.9 }
+        }
+      ]
+    },
+    "formal": {
+      "name": "Formal",
+      "description": "Professional and business attire",
+      "templates": [
+        {
+          "name": "Business Suit",
+          "items": ["blazer", "dress pants", "blouse", "pumps"],
+          "colors": ["black", "navy", "gray", "pinstripe"],
+          "materials": ["wool", "cotton", "silk"],
+          "moodEffects": { "professional": 0.95, "confidence": 0.9, "authority": 0.85 }
+        },
+        {
+          "name": "Formal Dress",
+          "items": ["formal dress", "pumps", "professional jewelry", "tote bag"],
+          "colors": ["black", "navy", "gray", "burgundy", "forest green"],
+          "materials": ["wool", "silk", "cotton", "polyester"],
+          "moodEffects": { "professional": 0.95, "elegance": 0.9, "confidence": 0.9 }
+        },
+        {
+          "name": "Business Casual",
+          "items": ["blouse", "slacks", "cardigan", "loafers"],
+          "colors": ["white", "cream", "navy", "gray", "black"],
+          "materials": ["cotton", "silk", "cashmere"],
+          "moodEffects": { "professional": 0.9, "comfort": 0.85, "approachability": 0.85 }
+        },
+        {
+          "name": "Formal Skirt Suit",
+          "items": ["blazer", "pencil skirt", "blouse", "pumps"],
+          "colors": ["black", "navy", "gray", "burgundy"],
+          "materials": ["wool", "cotton", "silk"],
+          "moodEffects": { "professional": 0.95, "confidence": 0.9, "authority": 0.9 }
+        },
+        {
+          "name": "Executive Outfit",
+          "items": ["designer suit", "silk blouse", "designer pumps", "designer bag"],
+          "colors": ["black", "navy", "gray", "white", "camel"],
+          "materials": ["wool", "silk", "cashmere", "leather"],
+          "moodEffects": { "professional": 1.0, "confidence": 0.95, "authority": 0.95 }
+        }
+      ]
+    },
+    "professional": {
+      "name": "Professional",
+      "description": "Work-ready and business attire",
+      "templates": [
+        {
+          "name": "Office Ready",
+          "items": ["blouse", "dress pants", "flats", "minimal jewelry"],
+          "colors": ["white", "cream", "navy", "black", "gray"],
+          "materials": ["cotton", "silk", "polyester"],
+          "moodEffects": { "professional": 0.9, "comfort": 0.85, "confidence": 0.85 }
+        },
+        {
+          "name": "Smart Casual",
+          "items": ["cardigan", "blouse", "slacks", "loafers"],
+          "colors": ["cream", "gray", "navy", "burgundy", "olive"],
+          "materials": ["cotton", "cashmere", "wool"],
+          "moodEffects": { "professional": 0.85, "comfort": 0.9, "approachability": 0.9 }
+        },
+        {
+          "name": "Creative Professional",
+          "items": ["blouse", "skirt", "blazer", "ankle boots"],
+          "colors": ["black", "gray", "navy", "burgundy", "purple"],
+          "materials": ["cotton", "silk", "wool", "leather"],
+          "moodEffects": { "professional": 0.9, "creativity": 0.85, "confidence": 0.85 }
+        },
+        {
+          "name": "Meeting Ready",
+          "items": ["dress", "blazer", "pumps", "tote bag"],
+          "colors": ["black", "navy", "gray", "burgundy", "forest green"],
+          "materials": ["wool", "silk", "cotton"],
+          "moodEffects": { "professional": 0.95, "confidence": 0.95, "authority": 0.85 }
+        },
+        {
+          "name": "Friday Casual",
+          "items": ["polo", "chinos", "sneakers", "watch"],
+          "colors": ["blue", "white", "gray", "navy", "khaki"],
+          "materials": ["cotton", "polo fabric", "canvas"],
+          "moodEffects": { "professional": 0.8, "comfort": 0.95, "relaxation": 0.85 }
+        }
+      ]
+    },
+    "intimate": {
+      "name": "Intimate",
+      "description": "Private and personal intimate wear",
+      "templates": [
+        {
+          "name": "Bedroom Lingerie",
+          "items": ["babydoll", "thong", "stockings"],
+          "colors": ["black", "white", "red", "pink", "purple"],
+          "materials": ["lace", "silk", "sheer"],
+          "moodEffects": { "intimacy": 0.95, "romance": 0.9, "sensuality": 0.95 }
+        },
+        {
+          "name": "Sheer Chemise",
+          "items": ["chemise", "robe", "slippers"],
+          "colors": ["black", "white", "pink", "purple", "blue"],
+          "materials": ["sheer", "silk", "lace"],
+          "moodEffects": { "intimacy": 0.9, "comfort": 0.9, "elegance": 0.85 }
+        },
+        {
+          "name": "Crotchless Bodysuit",
+          "items": ["crotchless bodysuit", "stockings", "heels"],
+          "colors": ["black", "red", "white", "pink"],
+          "materials": ["lace", "mesh", "leather"],
+          "moodEffects": { "intimacy": 1.0, "boldness": 0.95, "excitement": 0.95 }
+        },
+        {
+          "name": "Matching Lace Set",
+          "items": ["lace bra", "matching panties", "garter belt"],
+          "colors": ["black", "white", "red", "pink", "blue"],
+          "materials": ["lace", "silk"],
+          "moodEffects": { "intimacy": 0.9, "elegance": 0.85, "comfort": 0.8 }
+        },
+        {
+          "name": "Adult Roleplay Outfit",
+          "items": ["costume top", "costume bottom", "accessories"],
+          "colors": ["varies by costume"],
+          "materials": ["varies by costume"],
+          "moodEffects": { "playfulness": 0.95, "excitement": 0.9, "intimacy": 0.85 }
+        }
+      ]
+    }
+  },
+  "colorPalettes": {
+    "warm": ["#FFB6C1", "#FF69B4", "#FF1493", "#FF7F50", "#FFA500", "#FFD700"],
+    "cool": ["#87CEEB", "#4169E1", "#6495ED", "#7B68EE", "#9370DB", "#BA55D3"],
+    "neutral": ["#808080", "#A9A9A9", "#C0C0C0", "#D3D3D3", "#DCDCDC", "#F5F5F5"],
+    "bold": ["#FF0000", "#DC143C", "#B22222", "#8B0000", "#800000", "#FF4500"],
+    "pastel": ["#FFB6C1", "#E6E6FA", "#B0E0E6", "#98FB98", "#F0E68C", "#DDA0DD"],
+    "dark": ["#000000", "#1C1C1C", "#2F4F4F", "#191970", "#080808", "#1A1A1A"]
+  },
+  "styleCombinations": {
+    "romantic_seductive": ["romantic", "seductive", "intimate"],
+    "casual_comfortable": ["casual", "cozy", "comfortable"],
+    "professional_elegant": ["professional", "formal", "elegant"],
+    "active_sporty": ["sporty", "active", "energetic"],
+    "party_glamorous": ["party", "glamorous", "exciting"]
+  }
+}

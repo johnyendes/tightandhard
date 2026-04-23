@@ -22,8 +22,7 @@ out/
 **/node_modules/.prisma
 **/generated/
 
-# Legacy research data (not source code)
-legacy/
+# Archive zip extraction artifacts
 *.zip.extract/
 
 # Image library — included in git as backup.
@@ -44,4 +43,3 @@ Thumbs.db
 # Test artifacts
 coverage/
 .nyc_output/
-companion-engine/
