@@ -26,8 +26,9 @@ out/
 legacy/
 *.zip.extract/
 
-# Local image library (images live in Cloudinary, not git)
-girls-library/
+# Image library — included in git as backup.
+# Production images also live in Cloudinary, but git keeps the originals safe.
+# girls-library/
 
 # OS artifacts
 .DS_Store
