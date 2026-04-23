@@ -38,6 +38,10 @@ model Companion {
   personality   Json?       // { empathy: 95, warmth: 90, ... }
   defaultOutfits String[]   // ["romantic", "casual", "elegant"]
 
+  // Video avatar (animated profile) — looped muted MP4 plays in place of src when present
+  heroVideoUrl     String?
+  galleryVideoUrls String[]  @default([])
+
   category      Category     @relation(fields: [categoryId], references: [id])
   categoryId    String       @db.ObjectId
 

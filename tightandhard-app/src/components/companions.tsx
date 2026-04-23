@@ -35,8 +35,21 @@ export const Companions = ({ data }: CompanionsProps) => {
         >
           <Link href={`/chat/${item.id}`}>
             <CardHeader className='flex items-center justify-center text-center text-muted-foreground'>
-              <div className='relative w-32 h-32'>
-                <Image src={item.src} fill className='rounded-xl object-cover' alt='Character' />
+              <div className='relative w-32 h-32 rounded-xl overflow-hidden'>
+                {item.heroVideoUrl ? (
+                  // eslint-disable-next-line jsx-a11y/media-has-caption
+                  <video
+                    src={item.heroVideoUrl}
+                    poster={item.src}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className='absolute inset-0 w-full h-full object-cover'
+                  />
+                ) : (
+                  <Image src={item.src} fill className='object-cover' alt={item.name} />
+                )}
               </div>
               <p className='font-bold'>{item.name}</p>
               <p className='text-xs'>{item.description}</p>

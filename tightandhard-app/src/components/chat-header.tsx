@@ -54,7 +54,7 @@ export const ChatHeader = ({ companion }: ChatHeaderProps) => {
         <Button onClick={() => router.push('/')} size='icon' variant='ghost' aria-label='Back to menu'>
           <ChevronLeft className='h-8 w-8' />
         </Button>
-        <BotAvatar src={companion.src} />
+        <BotAvatar src={companion.src} videoSrc={companion.heroVideoUrl} />
         <div className='flex flex-col gap-y-1'>
           <div className='flex items-center gap-x-2'>
             <p className='font-bold'>{companion.name}</p>

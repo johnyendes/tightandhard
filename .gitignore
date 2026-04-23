@@ -44,3 +44,4 @@ Thumbs.db
 # Test artifacts
 coverage/
 .nyc_output/
+companion-engine/
